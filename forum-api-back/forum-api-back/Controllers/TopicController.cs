@@ -1,7 +1,9 @@
 ﻿using forum_api_back.DataAccess.DataObjects;
 using forum_api_back.Services;
+using forum_api_back.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using forum_api_back.Exceptions;
 
 namespace forum_api_back.Controllers
 {
@@ -16,9 +18,17 @@ namespace forum_api_back.Controllers
         }
 
         [HttpGet]
-        public List<Topic> GetAllTopics()
+        public IActionResult GetAllTopics()
         {
-            return this.service.GetAllTopics();
+            try
+            {
+                return Ok(this.service.GetAllTopics());
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            
         }
 
         [HttpGet("{id}")]
@@ -28,7 +38,7 @@ namespace forum_api_back.Controllers
             {
                 return Ok(this.service.GetTopicById(id));
             }
-            catch (Exception e)
+            catch (NotFoundException e)
             {
 
                 return BadRequest("Invalide requête : " + e.Message);
@@ -39,8 +49,16 @@ namespace forum_api_back.Controllers
         [HttpPost]
         public IActionResult CreateTopic(Topic topic)
         {
-            this.service.CreateTopic(topic);
-            return Ok("Création avec succès !");
+            try
+            {
+                this.service.CreateTopic(topic);
+                return Ok("Création avec succès !");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPut]
@@ -51,10 +69,10 @@ namespace forum_api_back.Controllers
                 this.service.UpdateTopic(topic);
                 return Ok("Modification avec succès");
             }
-            catch (ArgumentException e)
+            catch (NotFoundException e)
             {
 
-                throw new Exception("");
+                return BadRequest("Erreur dans l'update : " + e.Message);
             }
 
         }
@@ -62,8 +80,16 @@ namespace forum_api_back.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteTopic(int id)
         {
-            this.service.DeleteTopic(id);
-            return Ok("Supprimé avec succès");
+            try
+            {
+                this.service.DeleteTopic(id);
+                return Ok("Supprimé avec succès");
+            }
+            catch (NotFoundException e)
+            {
+                return BadRequest("Erreur dans la suppression " + e.Message);
+            }
+
         }
 
 

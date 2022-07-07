@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QuiEstCe.Exceptions
+namespace forum_api_back.Exceptions
 {
     public class NotFoundException : ArgumentException
     {

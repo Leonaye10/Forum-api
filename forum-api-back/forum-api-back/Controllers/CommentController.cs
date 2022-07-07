@@ -3,7 +3,7 @@ using forum_api_back.Interfaces;
 using forum_api_back.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QuiEstCe.Exceptions;
+using forum_api_back.Exceptions;
 
 namespace forum_api_back.Controllers
 {

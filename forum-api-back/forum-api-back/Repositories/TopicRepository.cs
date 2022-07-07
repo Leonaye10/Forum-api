@@ -1,4 +1,5 @@
 ﻿using forum_api_back.DataAccess.DataObjects;
+using forum_api_back.Interfaces;
 
 namespace forum_api_back.Repositories
 {
