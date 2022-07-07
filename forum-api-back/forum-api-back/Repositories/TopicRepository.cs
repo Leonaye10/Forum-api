@@ -2,7 +2,7 @@
 
 namespace forum_api_back.Repositories
 {
-    public class TopicRepository
+    public class TopicRepository : ITopicRepository
     {
         private readonly forumdbContext context;
         public TopicRepository(forumdbContext Context)
@@ -11,14 +11,14 @@ namespace forum_api_back.Repositories
         }
 
 
-        public Topic Create(Topic topic)
+        public Topic CreateTopic(Topic topic)
         {
             this.context.Topics.Add(topic);
             this.context.SaveChanges();
             return topic;
         }
 
-        public Topic Delete(int id)
+        public Topic DeleteTopic(int id)
         {
             Topic topic = this.context.Topics.FirstOrDefault(t => t.Idtopic == id);
             this.context.Topics.Remove(topic);
@@ -26,13 +26,13 @@ namespace forum_api_back.Repositories
             return topic;
         }
 
-        public Topic GetTopicId(int id)
+        public Topic GetTopicById(int id)
         {
             Topic topic = this.context.Topics.FirstOrDefault(t => t.Idtopic == id);
             return topic;
         }
 
-        public List<Topic> GetAllTopic()
+        public List<Topic> GetAllTopics()
         {
             List<Topic> topics = this.context.Topics.ToList();
             return topics;

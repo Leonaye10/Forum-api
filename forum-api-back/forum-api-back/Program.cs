@@ -1,3 +1,4 @@
+using forum_api_back.DataAccess.DataObjects;
 using forum_api_back.Repositories;
 using forum_api_back.Services;
 
@@ -10,16 +11,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddDbContext<forumdbContext>();
 
 // Ajout des repositories
-builder.Services.AddTransient<TopicRepository>();
+builder.Services.AddTransient<ITopicRepository, TopicRepository>();
 builder.Services.AddTransient<CommentRepository>();
 
 // Ajout des Services
-builder.Services.AddTransient<TopicService>();
+builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<CommentService>();
 
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

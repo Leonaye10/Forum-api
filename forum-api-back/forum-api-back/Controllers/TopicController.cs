@@ -9,42 +9,60 @@ namespace forum_api_back.Controllers
     [ApiController]
     public class TopicController : ControllerBase
     {
-        private readonly TopicService service;
-        public TopicController(TopicService Service)
+        private readonly ITopicService service;
+        public TopicController(ITopicService Service)
         {
             this.service = Service;
         }
 
         [HttpGet]
-        public List<Topic> GetAllTopic()
+        public List<Topic> GetAllTopics()
         {
-            return this.service.GetAllTopic();
+            return this.service.GetAllTopics();
         }
 
         [HttpGet("{id}")]
-        public Topic GetTopicId(int id)
+        public IActionResult GetTopicById(int id)
         {
-            return this.service.GetTopicId(id);
+            try
+            {
+                return Ok(this.service.GetTopicById(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest("Invalide requête : " + e.Message);
+            }
+            
         }
 
         [HttpPost]
-        public IActionResult Create(Topic topic)
+        public IActionResult CreateTopic(Topic topic)
         {
-            this.service.Create(topic);
+            this.service.CreateTopic(topic);
             return Ok("Création avec succès !");
         }
 
         [HttpPut]
         public IActionResult UpdateTopic(Topic topic)
         {
-            this.service.UpdateTopic(topic);
-            return Ok("Modification avec succès");
+            try
+            {
+                this.service.UpdateTopic(topic);
+                return Ok("Modification avec succès");
+            }
+            catch (ArgumentException e)
+            {
+
+                throw new Exception("");
+            }
+
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteTopic(int id)
         {
-            this.service.Delete(id);
+            this.service.DeleteTopic(id);
             return Ok("Supprimé avec succès");
         }
 
