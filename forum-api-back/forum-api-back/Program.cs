@@ -1,5 +1,7 @@
 using forum_api_back.DataAccess.DataObjects;
+
 using forum_api_back.Interfaces;
+
 using forum_api_back.Repositories;
 using forum_api_back.Services;
 
@@ -16,13 +18,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<forumdbContext>();
 
 // Ajout des repositories
-//builder.Services.AddSingleton<TopicRepository>();
+builder.Services.AddTransient<ITopicRepository, TopicRepository>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 
 // Ajout des Services
-//builder.Services.AddSingleton<TopicService>();
+builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
-
 
 var app = builder.Build();
 
