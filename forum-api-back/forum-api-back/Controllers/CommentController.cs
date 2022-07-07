@@ -49,7 +49,8 @@ namespace forum_api_back.Controllers
         {
             try
             {
-                return Created("Le commenatire a été créé", this.service.Create(comment));
+                this.service.Create(comment);
+                return Ok("Le commentaire a été créé");
             }
             catch (Exception e)
             {

@@ -1,6 +1,6 @@
 ﻿using forum_api_back.DataAccess.DataObjects;
 
-namespace forum_api_back.Repositories
+namespace forum_api_back.Interfaces
 {
     public interface ITopicRepository
     {

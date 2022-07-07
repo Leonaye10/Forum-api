@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace forum_api_back.DataAccess.DataObjects
 {
@@ -12,6 +13,7 @@ namespace forum_api_back.DataAccess.DataObjects
         public DateTime? DateModification { get; set; }
         public int? TopicId { get; set; }
 
+        [NotMapped]
         public virtual Topic? Topic { get; set; }
     }
 }
