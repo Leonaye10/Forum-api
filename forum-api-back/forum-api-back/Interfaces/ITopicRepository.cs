@@ -6,7 +6,7 @@ namespace forum_api_back.Interfaces
     {
         Topic CreateTopic(Topic topic);
         Topic UpdateTopic(Topic topic);
-        Topic DeleteTopic(int id);
+        void DeleteTopic(int id);
         Topic GetTopicById(int id);
         List<Topic> GetAllTopics();
 

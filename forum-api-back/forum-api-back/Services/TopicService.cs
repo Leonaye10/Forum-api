@@ -1,6 +1,7 @@
 ﻿using forum_api_back.DataAccess.DataObjects;
 using forum_api_back.Repositories;
 using forum_api_back.Interfaces;
+using forum_api_back.Exceptions;
 
 namespace forum_api_back.Services
 {
@@ -17,35 +18,47 @@ namespace forum_api_back.Services
         {
             if(topic == null)
             {
-                throw new ArgumentNullException("Impossible de construire un topic null");
+                throw new NotFoundException("Impossible de construire un topic null");
             }
             topic.DateCreation = DateTime.Now;
+            topic.Comments = new List<Comment>();
             return this.repo.CreateTopic(topic);
         }
 
         public List<Topic> GetAllTopics()
         {
+            List<Topic> topicList = this.repo.GetAllTopics();
+            if(topicList == null)
+            {
+                throw new NotFoundException("Aucun résultat");
+            }
             return this.repo.GetAllTopics();
         }
 
         public Topic GetTopicById(int id)
         {
-            return this.repo.GetTopicById(id);
+            Topic topic = this.repo.GetTopicById(id);
+            if (topic == null)
+            {
+                throw new NotFoundException("Aucun résultat");
+            }
+            return topic;
         }
 
         public Topic UpdateTopic(Topic topic)
         {
+            if( topic == null)
+            {
+                throw new NotFoundException("Update impossible");
+            }
             topic.DateModification = DateTime.Now;
             return this.repo.UpdateTopic(topic);
         }
 
         public void DeleteTopic(int id)
         {
-            Topic topic = this.repo.DeleteTopic(id);
-            if(topic == null)
-            {
-                throw new Exception("Le topic a supprimé n'existe pas");
-            }
+            this.GetTopicById(id);
+            this.repo.DeleteTopic(id);
         }
 
 
