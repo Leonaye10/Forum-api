@@ -22,6 +22,8 @@ builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 // Ajout des Services
 builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<IWorldFilterService, WorldFilterService>();
+
 
 
 builder.Services.AddCors(options =>
