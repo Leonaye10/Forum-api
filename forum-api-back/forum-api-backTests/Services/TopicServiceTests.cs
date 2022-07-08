@@ -59,6 +59,7 @@ namespace forum_api_back.Services.Tests
             }
             );
 
+
             this.expectedTopic = new Topic()
             {
                 Idtopic = 1,
