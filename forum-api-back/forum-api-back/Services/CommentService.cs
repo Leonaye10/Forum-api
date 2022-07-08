@@ -8,10 +8,17 @@ namespace forum_api_back.Services
     public class CommentService : ICommentService
     {
         private ICommentRepository repository;
+        private ITopicService topicService;
+        private IWorldFilterService worldFilterService;
 
-        public CommentService(ICommentRepository repository)
+        public ICommentRepository Object { get; }
+        public WorldFilterService WorldFilterService { get; }
+
+        public CommentService(ICommentRepository repository, IWorldFilterService worldFilterService, ITopicService topicService)
         {
             this.repository = repository;
+            this.worldFilterService = worldFilterService;
+            this.topicService = topicService;
         }
 
         public Comment FindById(int id) 
@@ -41,13 +48,15 @@ namespace forum_api_back.Services
                 throw new ArgumentException("L'objet est null");
             }
 
-            if(comment.TopicId == 0)
+            Topic topic = this.topicService.GetTopicById(comment.TopicId);
+
+            if (topic == null)
             {
                 throw new ArgumentException("Le commentaire n'est pas lié a un topic");
             }
 
             comment.DateCreation = DateTime.Now;
-            comment.Topic = new Topic();
+            comment.Contenu = this.worldFilterService.ChangeInsultToStar(comment.Contenu);
             return this.repository.Create(comment);
         }
 
@@ -59,6 +68,7 @@ namespace forum_api_back.Services
             }
 
             comment.DateModification = DateTime.Now;
+            comment.Contenu = this.worldFilterService.ChangeInsultToStar(comment.Contenu);
             return this.repository.Update(comment);
         }
 

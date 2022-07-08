@@ -18,12 +18,16 @@ namespace forum_api_back.Services.Tests
         private ICommentService _commentService;
         private Mock<ICommentRepository> _commentRepository;
         private List<Comment> _comments;
+        private IWorldFilterService _worldFilterService;
+        private ITopicService _topicService;
+        
 
         [TestInitialize]
         public void Initialize()
         {
             this._commentRepository = new Mock<ICommentRepository>();
-            this._commentService = new CommentService(this._commentRepository.Object);
+            this._worldFilterService = new WorldFilterService();
+            this._commentService = new CommentService(this._commentRepository.Object, this._worldFilterService, _topicService);
             this._comments = new List<Comment>();
 
             this._comments.Add(new Comment()
@@ -95,35 +99,65 @@ namespace forum_api_back.Services.Tests
         public void CreateTest_paramNotNull()
         {
             // GIVEN
+
             Comment comment = new Comment();
             comment.Idcomment = 1;
-            comment.Contenu = "Test";
-            comment.DateCreation = DateTime.Now;
-            _commentRepository.Setup(repo => repo.Create(comment));
-            _comments.Add(comment);
+            comment.NomUtilisateur = "user";
+            comment.Contenu = "contenu";
+            comment.DateCreation = new DateTime(2022);
+            comment.TopicId = 1;
+
+            Comment expectedComment = new Comment();
+            expectedComment.Topic = _topicService.GetTopicById(comment.TopicId);
+            _commentRepository.Setup(repo => repo.Create(comment)).Callback<Comment>(c =>
+            {
+                c.Idcomment = 1;
+                c.NomUtilisateur = "user";
+                c.Contenu = "contenu";
+                c.DateCreation = new DateTime(2022);
+                c.TopicId = 1;
+                expectedComment = c;
+            });
 
             // WHEN
             Comment result = _commentService.Create(comment);
 
             // THEN
-
+            //Assert.AreEqual(expectedComment.Idcomment, 1);
         }
-
 
         [TestMethod()]
         public void UpdateTest_paramNotNull()
         {
             // GIVEN
+            Topic topic = new Topic();
+            topic.Idtopic = 1;
+            topic.NomUtilisateur = "topicUser";
+            topic.Titre = "Titre";
+
             Comment comment = new Comment();
             comment.Idcomment = 1;
             comment.Contenu = "Test";
-            comment.DateModification = DateTime.Now;
-            _commentRepository.Setup(repo => repo.Update(comment));
+            comment.DateCreation = DateTime.Now;
+            comment.Topic = topic;
+
+            Comment expectedComment = new Comment();
+            _commentRepository.Setup(repo => repo.Update(comment)).Callback<Comment>(c =>
+            {
+                c.Idcomment = 1;
+                c.NomUtilisateur = "user";
+                c.Contenu = "contenu";
+                c.DateCreation = new DateTime(2022);
+                c.Topic = topic;
+                expectedComment = c;
+            });
 
             // WHEN
             Comment result = _commentService.Update(comment);
 
             // THEN
+            Assert.AreEqual(expectedComment.Idcomment, 1);
+            Assert.AreEqual(expectedComment.Topic.Idtopic, 1);
         }
 
         [TestMethod()]
