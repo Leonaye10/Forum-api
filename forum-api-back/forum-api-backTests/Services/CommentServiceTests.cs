@@ -96,6 +96,9 @@ namespace forum_api_back.Services.Tests
         {
             // GIVEN
             Comment comment = new Comment();
+            comment.Idcomment = 1;
+            comment.Contenu = "Test";
+            comment.DateCreation = DateTime.Now;
             _commentRepository.Setup(repo => repo.Create(comment));
             _comments.Add(comment);
 
@@ -112,6 +115,8 @@ namespace forum_api_back.Services.Tests
         {
             // GIVEN
             Comment comment = new Comment();
+            comment.Idcomment = 1;
+            comment.Contenu = "Test";
             comment.DateModification = DateTime.Now;
             _commentRepository.Setup(repo => repo.Update(comment));
 
