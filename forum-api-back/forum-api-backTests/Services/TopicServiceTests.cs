@@ -26,7 +26,7 @@ namespace forum_api_back.Services.Tests
         public void Initialize()
         {
             this._topicRepository = new Mock<ITopicRepository>();
-            this._topicService = new TopicService(this._topicRepository.Object);
+            this._topicService = new TopicService(this._topicRepository.Object, new WorldFilterService());
             this._listTopics = new List<Topic>();
             this._listTopics.Add(new Topic()
             {
