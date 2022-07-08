@@ -13,13 +13,25 @@ namespace forum_api_back.Services.Tests
     public class WorldFilterServiceTests
     {
         private IWorldFilterService _wordFilterService;
+        private WorldFilterService _classWorldFilterService;
         private string insulte;
+        private string motNumero2016;
 
         [TestInitialize]
         public void Initialize()
         {
             this._wordFilterService = new WorldFilterService();
             this.insulte = "c*n";
+        }
+
+        [TestMethod]
+        public void TestBanWordEstBienRempli()
+        {
+            this._classWorldFilterService = new WorldFilterService();
+            var insulteNumero2016 = "salope";
+            this.motNumero2016 = this._classWorldFilterService.banWords[2016];
+
+            Assert.AreEqual(this.motNumero2016, insulteNumero2016);
         }
 
         [TestMethod]

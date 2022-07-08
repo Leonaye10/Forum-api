@@ -9,9 +9,11 @@ namespace forum_api_back.Services
     {
 
         private readonly ITopicRepository repo;
-        public TopicService(ITopicRepository Repo)
+        private IWorldFilterService worldFilterService;
+        public TopicService(ITopicRepository Repo, IWorldFilterService worldFilterService)
         {
             repo = Repo;
+            this.worldFilterService = worldFilterService;
         }
 
         public Topic CreateTopic(Topic topic)
@@ -22,6 +24,7 @@ namespace forum_api_back.Services
             }
             topic.DateCreation = DateTime.Now;
             topic.Comments = new List<Comment>();
+            topic.Titre = this.worldFilterService.ChangeInsultToStar(topic.Titre);
             return this.repo.CreateTopic(topic);
         }
 
@@ -52,6 +55,7 @@ namespace forum_api_back.Services
                 throw new NotFoundException("Update impossible");
             }
             topic.DateModification = DateTime.Now;
+            topic.Titre = this.worldFilterService.ChangeInsultToStar(topic.Titre);
             return this.repo.UpdateTopic(topic);
         }
 
