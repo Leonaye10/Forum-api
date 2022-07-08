@@ -112,6 +112,16 @@ namespace forum_api_back.Services.Tests
             this._topicRepository.VerifyAll();
         }
 
+        [TestMethod]
+        public void GetAllTopics_Pasok()
+        {
+            // GIVEN
+            // WHEN / THEN
+            Assert.ThrowsException<NotFoundException>(() => this._topicService.GetAllTopics());
+
+            this._topicRepository.VerifyAll();
+        }
+
 
         [TestMethod]
         public void CreateTopic_ParamsOk()
@@ -132,6 +142,18 @@ namespace forum_api_back.Services.Tests
             // THEN
             Assert.AreEqual(returnedTopic.DateCreation, date);
             Assert.AreEqual(returnedTopic.Idtopic, 5);
+
+            this._topicRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CreateTopic_ParamsPasOk()
+        {
+            // GIVEN
+            Topic topic = new Topic() { };
+            topic = null;
+            // WHEN / THEN
+            Assert.ThrowsException<NotFoundException>(() => this._topicService.CreateTopic(topic));
 
             this._topicRepository.VerifyAll();
         }
