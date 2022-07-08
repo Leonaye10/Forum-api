@@ -1,4 +1,5 @@
 ﻿using forum_api_back.DataAccess.DataObjects;
+using forum_api_back.Exceptions;
 using forum_api_back.Interfaces;
 using forum_api_back.Repositories;
 
@@ -15,11 +16,12 @@ namespace forum_api_back.Services
 
         public Comment FindById(int id) 
         {
-            if(id <= 0)
+            Comment comment = this.repository.FindById(id);
+            if (comment == null)
             {
-                throw new ArgumentException("Pas d'objet trouvé avec cet id : " + id);
+                throw new NotFoundException("Pas d'objet trouvé avec cet id : " + id);
             }
-            return this.repository.FindById(id);
+            return comment;
         }
 
         public List<Comment> FindAll()
@@ -27,7 +29,7 @@ namespace forum_api_back.Services
             List<Comment> comments = this.repository.FindAll();
             if(comments == null)
             {
-                throw new ArgumentNullException("Pas d'objet dans la base de données");
+                throw new NotFoundException("Pas d'objet dans la base de données");
             }
             return comments;
         }
@@ -36,15 +38,16 @@ namespace forum_api_back.Services
         {
             if(comment == null)
             {
-                throw new ArgumentNullException("L'objet est null");
+                throw new ArgumentException("L'objet est null");
             }
 
             if(comment.TopicId == 0)
             {
-                throw new ArgumentNullException("Le commentaire n'est pas lié a un topic");
+                throw new ArgumentException("Le commentaire n'est pas lié a un topic");
             }
 
             comment.DateCreation = DateTime.Now;
+            comment.Topic = new Topic();
             return this.repository.Create(comment);
         }
 
@@ -52,7 +55,7 @@ namespace forum_api_back.Services
         {
             if(comment == null)
             {
-                throw new ArgumentNullException("L'objet est null");
+                throw new ArgumentException("L'objet est null");
             }
 
             comment.DateModification = DateTime.Now;
@@ -61,9 +64,10 @@ namespace forum_api_back.Services
 
         public void Delete(int id)
         {
-            if(id <= 0)
+            Comment comment = this.repository.FindById(id);
+            if(comment == null)
             {
-                throw new ArgumentNullException("id n'existe pas");
+                throw new ArgumentException("L'objet n'existe pas");
             }
             this.repository.Delete(id);
         }
