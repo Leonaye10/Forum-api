@@ -1,1 +1,10 @@
-<p>topic works!</p>
+<div class="container">
+    <div *ngFor="let topic of topics" class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ topic.titre }}</h5>
+            <p class="card-text">{{ topic.nomUtilisateur }}</p>
+
+            <q> Date de création : {{ topic.dateCreation | date: 'dd/MM/YYYY'}}</q>
+        </div>
+    </div>
+</div>

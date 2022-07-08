@@ -11,7 +11,7 @@ namespace forum_api_back.DataAccess.DataObjects
         public string Contenu { get; set; } = null!;
         public DateTime DateCreation { get; set; }
         public DateTime? DateModification { get; set; }
-        public int? TopicId { get; set; }
+        public int TopicId { get; set; }
 
         [NotMapped]
         public virtual Topic? Topic { get; set; }
