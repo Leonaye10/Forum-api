@@ -24,7 +24,6 @@ builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IWorldFilterService, WorldFilterService>();
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCORS", builder =>
