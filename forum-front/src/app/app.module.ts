@@ -1,14 +1,26 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AcceuilComponent } from './pages/acceuil/acceuil.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { TopicComponent } from './components/topic/topic.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AcceuilComponent,
+    NavbarComponent,
+    TopicComponent,
+    CommentComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
